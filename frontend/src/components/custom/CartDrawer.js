@@ -122,12 +122,12 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
   const saveOrder = async () => {
     try {
-      await axios.post(`${API}/orders`, {
+      const orderData = {
         customer_name: customerName,
         customer_phone: customerPhone,
         items: cart.map(item => ({
           name: item.name,
-          weight: item.weight,
+          weight: item.weight || null,
           price: item.price,
           quantity: item.quantity
         })),
@@ -135,30 +135,41 @@ const CartDrawer = ({ isOpen, onClose }) => {
         discount: discount,
         total: finalTotal,
         promocode: appliedPromo?.code || null
-      });
+      };
+      
+      await axios.post(`${API}/orders`, orderData);
+      console.log("Order saved successfully");
+      return true;
     } catch (error) {
       console.error("Error saving order:", error);
+      return false;
     }
   };
 
   const orderViaWhatsApp = async () => {
     if (!validateOrder()) return;
     
-    await saveOrder();
+    const saved = await saveOrder();
+    if (saved) {
+      toast.success("Заказ сохранён!");
+    }
+    
     const message = encodeURIComponent(formatOrderMessage());
     const whatsappUrl = `https://wa.me/77083214571?text=${message}`;
     window.open(whatsappUrl, "_blank");
-    toast.success("Перенаправляем в WhatsApp...");
   };
 
   const orderViaTelegram = async () => {
     if (!validateOrder()) return;
     
-    await saveOrder();
+    const saved = await saveOrder();
+    if (saved) {
+      toast.success("Заказ сохранён!");
+    }
+    
     const message = encodeURIComponent(formatOrderMessage());
     const telegramUrl = `https://t.me/fermamedovik?text=${message}`;
     window.open(telegramUrl, "_blank");
-    toast.success("Перенаправляем в Telegram...");
   };
 
   return (
