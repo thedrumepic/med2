@@ -599,22 +599,34 @@ const AdminPage = () => {
         <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
           <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => setCurrentView("dashboard")} className="text-gray-400 hover:text-gray-600">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <button onClick={() => setCurrentView("dashboard")} className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Grid3X3 className="w-4 h-4 text-white" />
-              </div>
+              </button>
               <span className="font-semibold text-gray-800">Категории</span>
             </div>
-            <button onClick={handleLogout} className="text-red-500 hover:text-red-600">
-              <LogOut className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700 text-sm">
+                На сайт
+              </button>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 text-sm">
+                Выйти
+              </button>
+            </div>
           </div>
         </header>
 
         {/* Content */}
         <main className="max-w-2xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-800">Список категорий</h2>
+            <button 
+              onClick={() => setCurrentView("products")}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              Перейти к Товарам →
+            </button>
+          </div>
+          
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="space-y-3">
               {categories.map((category, index) => (
