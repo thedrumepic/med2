@@ -5,7 +5,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "@/components/ui/button";
 import { X, ShoppingCart } from "lucide-react";
 
-const ProductModal = ({ product, category, isOpen, onClose }) => {
+const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
   const { addToCart } = useCart();
   const [selectedWeight, setSelectedWeight] = useState(null);
 
@@ -24,6 +24,7 @@ const ProductModal = ({ product, category, isOpen, onClose }) => {
 
   const handleAddToCart = () => {
     addToCart(product, selectedWeight);
+    if (onAddToCart) onAddToCart();
     onClose();
   };
 
