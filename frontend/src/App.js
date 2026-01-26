@@ -118,7 +118,22 @@ function App() {
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </BrowserRouter>
-        <Toaster position="top-center" richColors />
+        <Toaster 
+          position="top-center" 
+          duration={1500}
+          toastOptions={{
+            style: {
+              background: '#FFFBEB',
+              border: '1px solid #F59E0B',
+              color: '#92400E',
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '14px',
+              padding: '12px 16px',
+              borderRadius: '12px',
+            },
+            className: 'shadow-lg',
+          }}
+        />
       </div>
     </CartContext.Provider>
   );
