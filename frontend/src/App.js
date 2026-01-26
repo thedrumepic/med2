@@ -1,53 +1,117 @@
-import { useEffect } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
+import HomePage from "@/pages/HomePage";
+import AdminPage from "@/pages/AdminPage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+export const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
+// Cart Context
+export const CartContext = createContext();
+
+export const useCart = () => useContext(CartContext);
+
+function App() {
+  const [cart, setCart] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
     try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
+      // Seed data first
+      await axios.post(`${API}/seed`);
+      
+      const [catRes, prodRes] = await Promise.all([
+        axios.get(`${API}/categories`),
+        axios.get(`${API}/products`)
+      ]);
+      setCategories(catRes.data);
+      setProducts(prodRes.data);
     } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      console.error("Error fetching data:", e);
+      toast.error("Ошибка загрузки данных");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    helloWorldApi();
+    fetchData();
   }, []);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+  const addToCart = (product, selectedWeight = null) => {
+    const cartItem = {
+      id: `${product.id}-${selectedWeight?.weight || 'default'}`,
+      productId: product.id,
+      name: product.name,
+      image: product.image,
+      weight: selectedWeight?.weight || null,
+      price: selectedWeight?.price || product.base_price,
+      quantity: 1
+    };
 
-function App() {
+    setCart(prevCart => {
+      const existingIndex = prevCart.findIndex(item => item.id === cartItem.id);
+      if (existingIndex >= 0) {
+        const newCart = [...prevCart];
+        newCart[existingIndex].quantity += 1;
+        return newCart;
+      }
+      return [...prevCart, cartItem];
+    });
+    
+    toast.success("Товар добавлен в корзину");
+  };
+
+  const removeFromCart = (itemId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== itemId));
+  };
+
+  const updateQuantity = (itemId, delta) => {
+    setCart(prevCart => {
+      return prevCart.map(item => {
+        if (item.id === itemId) {
+          const newQty = item.quantity + delta;
+          if (newQty <= 0) return null;
+          return { ...item, quantity: newQty };
+        }
+        return item;
+      }).filter(Boolean);
+    });
+  };
+
+  const clearCart = () => setCart([]);
+
+  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <CartContext.Provider value={{ 
+      cart, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      clearCart, 
+      cartTotal,
+      categories,
+      products,
+      loading,
+      fetchData
+    }}>
+      <div className="App min-h-screen bg-background">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-center" richColors />
+      </div>
+    </CartContext.Provider>
   );
 }
 
