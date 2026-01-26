@@ -366,17 +366,19 @@ const AdminPage = () => {
         <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => setCurrentView("dashboard")} className="text-gray-400 hover:text-gray-600">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <button onClick={() => setCurrentView("dashboard")} className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Package className="w-4 h-4 text-white" />
-              </div>
+              </button>
               <span className="font-semibold text-gray-800">Товары</span>
             </div>
-            <button onClick={handleLogout} className="text-red-500 hover:text-red-600">
-              <LogOut className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700 text-sm">
+                На сайт
+              </button>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 text-sm">
+                Выйти
+              </button>
+            </div>
           </div>
         </header>
 
