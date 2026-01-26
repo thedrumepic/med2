@@ -117,6 +117,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
           </Routes>
         </BrowserRouter>
         <Toaster 
