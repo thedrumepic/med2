@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Package, Grid3X3, ChevronRight, ChevronLeft, Plus, Pencil, Trash2, LogOut, X, Upload, Settings, ChevronUp, ChevronDown } from "lucide-react";
+import { Package, Grid3X3, ChevronRight, Plus, Pencil, Trash2, LogOut, X, Upload, Settings, ChevronUp, ChevronDown, Users, Tag, Percent } from "lucide-react";
 
 const ADMIN_PASSWORD = "secretboost1";
 
@@ -30,11 +30,14 @@ const AdminPage = () => {
   const [password, setPassword] = useState("");
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [currentView, setCurrentView] = useState("dashboard"); // dashboard, products, categories
+  const [orders, setOrders] = useState([]);
+  const [promocodes, setPromocodes] = useState([]);
+  const [currentView, setCurrentView] = useState("dashboard");
   
   // Modal states
   const [productModalOpen, setProductModalOpen] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [promocodeModalOpen, setPromocodeModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
 
@@ -48,6 +51,12 @@ const AdminPage = () => {
     weight_prices: []
   });
   const [categoryForm, setCategoryForm] = useState({ name: "", slug: "" });
+  const [promocodeForm, setPromocodeForm] = useState({
+    code: "",
+    discount_type: "percent",
+    discount_value: 0,
+    max_uses: 100
+  });
   const [weightInput, setWeightInput] = useState({ weight: "", price: "" });
 
   const authHeader = {
@@ -57,7 +66,6 @@ const AdminPage = () => {
     }
   };
 
-  // Check session on mount
   useEffect(() => {
     const session = localStorage.getItem("admin_session");
     if (session === "authenticated") {
@@ -86,14 +94,18 @@ const AdminPage = () => {
 
   const fetchData = async () => {
     try {
-      const [catRes, prodRes] = await Promise.all([
+      const [catRes, prodRes, ordersRes, promoRes] = await Promise.all([
         axios.get(`${API}/categories`),
-        axios.get(`${API}/products`)
+        axios.get(`${API}/products`),
+        axios.get(`${API}/orders`, authHeader),
+        axios.get(`${API}/promocodes`, authHeader)
       ]);
       setCategories(catRes.data);
       setProducts(prodRes.data);
+      setOrders(ordersRes.data);
+      setPromocodes(promoRes.data);
     } catch (error) {
-      toast.error("Ошибка загрузки данных");
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -200,6 +212,39 @@ const AdminPage = () => {
     }
   };
 
+  // Promocode CRUD
+  const openPromocodeModal = () => {
+    setPromocodeForm({
+      code: "",
+      discount_type: "percent",
+      discount_value: 0,
+      max_uses: 100
+    });
+    setPromocodeModalOpen(true);
+  };
+
+  const savePromocode = async () => {
+    try {
+      await axios.post(`${API}/promocodes`, promocodeForm, authHeader);
+      toast.success("Промокод создан");
+      setPromocodeModalOpen(false);
+      fetchData();
+    } catch (error) {
+      toast.error("Ошибка создания промокода");
+    }
+  };
+
+  const deletePromocode = async (id) => {
+    if (!window.confirm("Удалить промокод?")) return;
+    try {
+      await axios.delete(`${API}/promocodes/${id}`, authHeader);
+      toast.success("Промокод удален");
+      fetchData();
+    } catch (error) {
+      toast.error("Ошибка удаления промокода");
+    }
+  };
+
   const addWeightPrice = () => {
     if (weightInput.weight && weightInput.price) {
       setProductForm(prev => ({
@@ -280,34 +325,32 @@ const AdminPage = () => {
   if (currentView === "dashboard") {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
         <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => navigate("/")} className="text-gray-400 hover:text-gray-600">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Settings className="w-4 h-4 text-white" />
               </div>
               <span className="font-semibold text-gray-800">Админ-панель</span>
             </div>
-            <button onClick={handleLogout} className="text-red-500 hover:text-red-600">
-              <LogOut className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700 text-sm">
+                На сайт
+              </button>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 text-sm">
+                Выйти
+              </button>
+            </div>
           </div>
         </header>
 
-        {/* Content */}
         <main className="max-w-4xl mx-auto px-4 py-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
             Добро пожаловать!
           </h2>
           <p className="text-gray-500 mb-8">Выберите раздел для управления</p>
 
-          {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {/* Products Card */}
             <button
               onClick={() => setCurrentView("products")}
               className="bg-white rounded-2xl p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow text-left"
@@ -323,7 +366,6 @@ const AdminPage = () => {
               <ChevronRight className="w-5 h-5 text-gray-300" />
             </button>
 
-            {/* Categories Card */}
             <button
               onClick={() => setCurrentView("categories")}
               className="bg-white rounded-2xl p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow text-left"
@@ -335,6 +377,36 @@ const AdminPage = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">Категории</h3>
                 <p className="text-sm text-gray-500">{categories.length} категорий товаров</p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-gray-300" />
+            </button>
+
+            <button
+              onClick={() => setCurrentView("orders")}
+              className="bg-white rounded-2xl p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow text-left"
+              data-testid="orders-card"
+            >
+              <div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center">
+                <Users className="w-7 h-7 text-green-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-800">Данные</h3>
+                <p className="text-sm text-gray-500">{orders.length} заказов от клиентов</p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-gray-300" />
+            </button>
+
+            <button
+              onClick={() => setCurrentView("promocodes")}
+              className="bg-white rounded-2xl p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow text-left"
+              data-testid="promocodes-card"
+            >
+              <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
+                <Tag className="w-7 h-7 text-orange-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-800">Промокоды</h3>
+                <p className="text-sm text-gray-500">{promocodes.length} активных промокодов</p>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-300" />
             </button>
@@ -368,11 +440,11 @@ const AdminPage = () => {
               </div>
 
               <div>
-                <h4 className="font-semibold text-gray-800 mb-2">📁 Управление категориями</h4>
+                <h4 className="font-semibold text-gray-800 mb-2">🏷️ Промокоды</h4>
                 <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li><strong>Добавить:</strong> Категории → "Добавить категорию"</li>
-                  <li><strong>Slug:</strong> латинское название для URL (honey, creams)</li>
-                  <li><strong>Удалить:</strong> нажмите иконку корзины (товары останутся)</li>
+                  <li><strong>Создать:</strong> Промокоды → Добавить промокод</li>
+                  <li><strong>Тип скидки:</strong> проценты или фиксированная сумма в ₸</li>
+                  <li><strong>Лимит:</strong> укажите максимальное количество использований</li>
                 </ul>
               </div>
 
@@ -381,7 +453,7 @@ const AdminPage = () => {
                 <ul className="list-disc list-inside space-y-1 ml-2">
                   <li>Заказы приходят в <strong>WhatsApp:</strong> +7 708 321 45 71</li>
                   <li>Или в <strong>Telegram:</strong> @fermamedovik</li>
-                  <li>Сообщение содержит: имя, телефон, список товаров и сумму</li>
+                  <li>Все заказы сохраняются в разделе <strong>Данные</strong></li>
                 </ul>
               </div>
 
@@ -401,7 +473,6 @@ const AdminPage = () => {
   if (currentView === "products") {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
         <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -424,7 +495,6 @@ const AdminPage = () => {
           </div>
         </header>
 
-        {/* Content */}
         <main className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
@@ -445,7 +515,6 @@ const AdminPage = () => {
             </Button>
           </div>
 
-          {/* Products Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map(product => (
               <div key={product.id} className="bg-white rounded-2xl p-4 shadow-sm">
@@ -637,7 +706,6 @@ const AdminPage = () => {
   if (currentView === "categories") {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
         <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
           <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -660,7 +728,6 @@ const AdminPage = () => {
           </div>
         </header>
 
-        {/* Content */}
         <main className="max-w-2xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-800">Список категорий</h2>
@@ -696,7 +763,6 @@ const AdminPage = () => {
               ))}
             </div>
 
-            {/* Add Category Button */}
             <button
               onClick={() => openCategoryModal()}
               className="w-full mt-4 py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:text-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
@@ -708,7 +774,6 @@ const AdminPage = () => {
           </div>
         </main>
 
-        {/* Category Modal */}
         <Dialog open={categoryModalOpen} onOpenChange={setCategoryModalOpen}>
           <DialogContent>
             <DialogHeader>
@@ -735,6 +800,236 @@ const AdminPage = () => {
                 <Button variant="outline" onClick={() => setCategoryModalOpen(false)}>Отмена</Button>
                 <Button onClick={saveCategory} className="bg-primary hover:bg-primary/90" data-testid="save-category-btn">
                   Сохранить
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
+
+  // Orders/Data View
+  if (currentView === "orders") {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentView("dashboard")} className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <Users className="w-4 h-4 text-white" />
+              </button>
+              <span className="font-semibold text-gray-800">Данные</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentView("dashboard")} className="text-primary hover:text-primary/80 text-sm font-medium">
+                Админ
+              </button>
+              <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700 text-sm">
+                На сайт
+              </button>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 text-sm">
+                Выйти
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-800">Заказы клиентов</h2>
+            <button 
+              onClick={() => setCurrentView("promocodes")}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              Перейти к Промокодам →
+            </button>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            {orders.length === 0 ? (
+              <div className="p-12 text-center">
+                <Users className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+                <p className="text-gray-500">Заказов пока нет</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Имя</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Телефон</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Сумма</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Промокод</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {orders.map(order => (
+                      <tr key={order.id} className="hover:bg-gray-50">
+                        <td className="py-3 px-4 text-sm text-gray-800">{order.customer_name}</td>
+                        <td className="py-3 px-4 text-sm text-gray-600">{order.customer_phone}</td>
+                        <td className="py-3 px-4 text-sm font-medium text-gray-800">{order.total} ₸</td>
+                        <td className="py-3 px-4 text-sm">
+                          {order.promocode ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-medium">
+                              <Tag className="w-3 h-3" />
+                              {order.promocode}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Promocodes View
+  if (currentView === "promocodes") {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+          <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentView("dashboard")} className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <Tag className="w-4 h-4 text-white" />
+              </button>
+              <span className="font-semibold text-gray-800">Промокоды</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentView("dashboard")} className="text-primary hover:text-primary/80 text-sm font-medium">
+                Админ
+              </button>
+              <button onClick={() => navigate("/")} className="text-gray-500 hover:text-gray-700 text-sm">
+                На сайт
+              </button>
+              <button onClick={handleLogout} className="text-red-500 hover:text-red-600 text-sm">
+                Выйти
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-2xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-800">Список промокодов</h2>
+            <button 
+              onClick={() => setCurrentView("orders")}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              Перейти к Данным →
+            </button>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="space-y-3">
+              {promocodes.map((promo) => (
+                <div 
+                  key={promo.id} 
+                  className="flex items-center gap-4 py-3 px-4 bg-gray-50 rounded-xl"
+                >
+                  <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                    {promo.discount_type === "percent" ? (
+                      <Percent className="w-5 h-5 text-orange-500" />
+                    ) : (
+                      <span className="text-orange-500 font-bold text-xs">₸</span>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-800">{promo.code}</p>
+                    <p className="text-xs text-gray-500">
+                      {promo.discount_type === "percent" 
+                        ? `${promo.discount_value}% скидка`
+                        : `${promo.discount_value} ₸ скидка`
+                      } • Использовано: {promo.current_uses}/{promo.max_uses}
+                    </p>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => deletePromocode(promo.id)}
+                    className="text-gray-300 hover:text-red-500"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => openPromocodeModal()}
+              className="w-full mt-4 py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:text-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
+              data-testid="add-promocode-btn"
+            >
+              <Plus className="w-4 h-4" />
+              Добавить промокод
+            </button>
+          </div>
+        </main>
+
+        <Dialog open={promocodeModalOpen} onOpenChange={setPromocodeModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Создать промокод</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <Label>Код промокода</Label>
+                <Input
+                  value={promocodeForm.code}
+                  onChange={(e) => setPromocodeForm(prev => ({ ...prev, code: e.target.value }))}
+                  placeholder="Например: HONEY20 или СКИДКА"
+                  data-testid="promocode-code-input"
+                />
+              </div>
+              <div>
+                <Label>Тип скидки</Label>
+                <Select
+                  value={promocodeForm.discount_type}
+                  onValueChange={(value) => setPromocodeForm(prev => ({ ...prev, discount_type: value }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="percent">Проценты (%)</SelectItem>
+                    <SelectItem value="fixed">Фиксированная сумма (₸)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>
+                  {promocodeForm.discount_type === "percent" ? "Процент скидки" : "Сумма скидки (₸)"}
+                </Label>
+                <Input
+                  type="number"
+                  value={promocodeForm.discount_value}
+                  onChange={(e) => setPromocodeForm(prev => ({ ...prev, discount_value: parseFloat(e.target.value) || 0 }))}
+                  placeholder={promocodeForm.discount_type === "percent" ? "10" : "500"}
+                  data-testid="promocode-value-input"
+                />
+              </div>
+              <div>
+                <Label>Максимальное количество использований</Label>
+                <Input
+                  type="number"
+                  value={promocodeForm.max_uses}
+                  onChange={(e) => setPromocodeForm(prev => ({ ...prev, max_uses: parseInt(e.target.value) || 0 }))}
+                  placeholder="100"
+                  data-testid="promocode-uses-input"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-4">
+                <Button variant="outline" onClick={() => setPromocodeModalOpen(false)}>Отмена</Button>
+                <Button onClick={savePromocode} className="bg-primary hover:bg-primary/90" data-testid="save-promocode-btn">
+                  Создать
                 </Button>
               </div>
             </div>
