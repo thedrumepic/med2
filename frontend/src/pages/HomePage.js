@@ -35,8 +35,8 @@ const HomePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Загрузка...</p>
+          <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground text-sm md:text-base">Загрузка...</p>
         </div>
       </div>
     );
@@ -46,16 +46,16 @@ const HomePage = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-white text-lg">🐝</span>
+        <div className="max-w-7xl mx-auto px-3 md:px-8 py-3 md:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-full flex items-center justify-center">
+              <span className="text-white text-sm md:text-lg">🐝</span>
             </div>
             <div>
-              <h1 className="font-bold text-lg text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <h1 className="font-bold text-sm md:text-lg text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
                 Ферма Медовик
               </h1>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">онлайн магазин</p>
+              <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider hidden sm:block">онлайн магазин</p>
             </div>
           </div>
           
@@ -65,9 +65,9 @@ const HomePage = () => {
               className="relative p-2 hover:bg-secondary rounded-full transition-colors"
               data-testid="cart-button"
             >
-              <ShoppingCart className="w-6 h-6 text-primary" />
+              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold">
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] md:text-xs w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center font-semibold">
                   {cartItemsCount}
                 </span>
               )}
@@ -75,9 +75,9 @@ const HomePage = () => {
             
             {/* Cart Hint Animation */}
             {showCartHint && (
-              <div className="absolute top-full right-0 mt-2 whitespace-nowrap animate-bounce">
-                <div className="bg-primary text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-lg relative">
-                  <div className="absolute -top-1 right-4 w-2 h-2 bg-primary rotate-45"></div>
+              <div className="absolute top-full right-0 mt-2 whitespace-nowrap animate-bounce z-50">
+                <div className="bg-primary text-white text-[10px] md:text-xs font-medium px-2 py-1 md:px-3 md:py-1.5 rounded-lg shadow-lg relative">
+                  <div className="absolute -top-1 right-3 md:right-4 w-2 h-2 bg-primary rotate-45"></div>
                   Ваши товары тут ↑
                 </div>
               </div>
@@ -87,21 +87,21 @@ const HomePage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-12 md:py-16 px-4 md:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
+      <section className="py-8 md:py-12 lg:py-16 px-3 md:px-8 text-center">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary mb-2 md:mb-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
           Здоровье на крыльях пчелы
         </h2>
-        <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-6">
+        <p className="text-muted-foreground text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-4 md:mb-6 px-4">
           Натуральный мёд и пчелопродукты с пасеки прямо к вам
         </p>
-        <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-border/50">
-          <span className="text-red-500">❤️</span>
-          <span className="text-sm font-medium text-foreground">100% Натурально</span>
+        <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-sm border border-border/50">
+          <span className="text-red-500 text-sm md:text-base">❤️</span>
+          <span className="text-xs md:text-sm font-medium text-foreground">100% Натурально</span>
         </div>
       </section>
 
       {/* Categories */}
-      <section className="px-4 md:px-8 pb-8">
+      <section className="px-3 md:px-8 pb-6 md:pb-8">
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
@@ -110,9 +110,9 @@ const HomePage = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="px-4 md:px-8 pb-16">
+      <section className="px-3 md:px-8 pb-12 md:pb-16">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
             {filteredProducts.map((product, index) => (
               <div
                 key={product.id}
@@ -129,16 +129,16 @@ const HomePage = () => {
           </div>
           
           {filteredProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">Товары не найдены</p>
+            <div className="text-center py-12 md:py-16">
+              <p className="text-muted-foreground text-sm md:text-base">Товары не найдены</p>
             </div>
           )}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary/30 py-8 text-center">
-        <p className="text-sm text-muted-foreground">
+      <footer className="bg-secondary/30 py-6 md:py-8 text-center">
+        <p className="text-xs md:text-sm text-muted-foreground px-4">
           © 2026 Ферма Медовик. Все права защищены.
         </p>
       </footer>

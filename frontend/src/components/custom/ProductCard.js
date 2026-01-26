@@ -16,32 +16,33 @@ const ProductCard = ({ product, category, onOpenModal }) => {
           src={product.image}
           alt={product.name}
           className="product-image w-full h-full object-cover"
+          loading="lazy"
         />
         {/* Category Badge */}
         {category && (
-          <span className="absolute top-3 right-3 bg-primary text-white text-xs font-semibold px-2 py-1 rounded-md uppercase tracking-wider">
+          <span className="absolute top-2 right-2 md:top-3 md:right-3 bg-primary text-white text-[10px] md:text-xs font-semibold px-1.5 py-0.5 md:px-2 md:py-1 rounded-md uppercase tracking-wider">
             {category.name}
           </span>
         )}
         {/* Decorative bee icon */}
-        <div className="absolute bottom-3 right-3 w-6 h-6 bg-amber-400/80 rounded-full flex items-center justify-center">
-          <span className="text-xs">🐝</span>
+        <div className="absolute bottom-2 right-2 md:bottom-3 md:right-3 w-5 h-5 md:w-6 md:h-6 bg-amber-400/80 rounded-full flex items-center justify-center">
+          <span className="text-[10px] md:text-xs">🐝</span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <h3 className="font-semibold text-foreground mb-1 line-clamp-1" style={{ fontFamily: 'Nunito, sans-serif' }}>
+      <div className="p-3 md:p-4">
+        <h3 className="font-semibold text-foreground mb-1 line-clamp-1 text-sm md:text-base" style={{ fontFamily: 'Nunito, sans-serif' }}>
           {product.name}
         </h3>
         
-        <p className="text-primary font-bold text-lg mb-3">
+        <p className="text-primary font-bold text-base md:text-lg mb-2 md:mb-3">
           {displayPrice} ₸
         </p>
 
         <Button
           onClick={onOpenModal}
-          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2 rounded-lg btn-primary"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2 md:py-2.5 rounded-lg btn-primary text-sm md:text-base"
           data-testid={`select-product-${product.id}`}
         >
           Выбрать
