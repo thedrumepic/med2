@@ -340,18 +340,57 @@ const AdminPage = () => {
             </button>
           </div>
 
-          {/* Tip Card */}
-          <div className="bg-amber-50 rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute right-4 bottom-4 opacity-10">
-              <Settings className="w-24 h-24 text-primary" />
-            </div>
-            <h3 className="font-semibold text-primary mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              Совет дня
+          {/* Instructions Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm">
+            <h3 className="font-bold text-gray-800 mb-4 text-lg" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              📋 Инструкции
             </h3>
-            <p className="text-primary/80 text-sm max-w-md">
-              Регулярно обновляйте фотографии товаров и добавляйте подробные описания. 
-              Это повышает доверие покупателей и увеличивает продажи!
-            </p>
+            
+            <div className="space-y-4 text-sm text-gray-600">
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">🛒 Управление товарами</h4>
+                <ul className="list-disc list-inside space-y-1 ml-2">
+                  <li><strong>Добавить товар:</strong> Товары → Добавить → заполните форму</li>
+                  <li><strong>Редактировать:</strong> нажмите "Изменить" на карточке товара</li>
+                  <li><strong>Удалить:</strong> нажмите иконку корзины на карточке</li>
+                  <li><strong>Фото:</strong> вставьте URL или загрузите файл (кнопка ↑)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">⚖️ Граммовки и цены</h4>
+                <ul className="list-disc list-inside space-y-1 ml-2">
+                  <li><strong>Добавить:</strong> введите вес (250гр) и цену → нажмите +</li>
+                  <li><strong>Редактировать:</strong> измените значения прямо в полях</li>
+                  <li><strong>Порядок:</strong> используйте стрелки ↑↓ для сортировки</li>
+                  <li><strong>Удалить:</strong> нажмите ✕ справа от граммовки</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">📁 Управление категориями</h4>
+                <ul className="list-disc list-inside space-y-1 ml-2">
+                  <li><strong>Добавить:</strong> Категории → "Добавить категорию"</li>
+                  <li><strong>Slug:</strong> латинское название для URL (honey, creams)</li>
+                  <li><strong>Удалить:</strong> нажмите иконку корзины (товары останутся)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-2">📱 Заказы клиентов</h4>
+                <ul className="list-disc list-inside space-y-1 ml-2">
+                  <li>Заказы приходят в <strong>WhatsApp:</strong> +7 708 321 45 71</li>
+                  <li>Или в <strong>Telegram:</strong> @fermamedovik</li>
+                  <li>Сообщение содержит: имя, телефон, список товаров и сумму</li>
+                </ul>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs text-gray-400">
+                  💡 Сессия сохраняется — при повторном входе пароль вводить не нужно
+                </p>
+              </div>
+            </div>
           </div>
         </main>
       </div>
