@@ -265,7 +265,7 @@ const AdminPage = () => {
     if (weightInput.weight && weightInput.price) {
       setProductForm(prev => ({
         ...prev,
-        weight_prices: [...prev.weight_prices, { weight: weightInput.weight, price: parseFloat(weightInput.price) }]
+        weight_prices: [...prev.weight_prices, { weight: weightInput.weight, price: weightInput.price }]
       }));
       setWeightInput({ weight: "", price: "" });
     }
@@ -282,7 +282,7 @@ const AdminPage = () => {
     setProductForm(prev => ({
       ...prev,
       weight_prices: prev.weight_prices.map((wp, i) => 
-        i === index ? { ...wp, [field]: field === 'price' ? parseFloat(value) || 0 : value } : wp
+        i === index ? { ...wp, [field]: value } : wp
       )
     }));
   };
