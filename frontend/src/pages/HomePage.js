@@ -48,15 +48,17 @@ const HomePage = () => {
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50">
         <div className="max-w-7xl mx-auto px-3 md:px-8 py-3 md:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-white text-sm md:text-lg">🐝</span>
-            </div>
-            <div>
-              <h1 className="font-bold text-sm md:text-lg text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                Ферма Медовик
-              </h1>
-              <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider hidden sm:block">онлайн магазин</p>
-            </div>
+            <a href="/" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-white text-sm md:text-lg">🐝</span>
+              </div>
+              <div>
+                <h1 className="font-bold text-sm md:text-lg text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                  Ферма Медовик
+                </h1>
+                <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider hidden sm:block">онлайн магазин</p>
+              </div>
+            </a>
           </div>
           
           <div className="relative">
