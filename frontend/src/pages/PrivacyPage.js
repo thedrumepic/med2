@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Bug } from "lucide-react";
 
 const PrivacyPage = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const PrivacyPage = () => {
           </button>
           <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-white text-sm">🐝</span>
+              <Bug className="w-4 h-4 text-white" />
             </div>
             <span className="font-bold text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
               Ферма Медовик
