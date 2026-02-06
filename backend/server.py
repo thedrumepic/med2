@@ -256,6 +256,13 @@ async def create_order(order: OrderCreate):
     await db.orders.insert_one(order_dict)
     return Order(**order_dict)
 
+@api_router.delete("/orders/{order_id}")
+async def delete_order(order_id: str, admin: str = Depends(verify_admin)):
+    result = await db.orders.delete_one({"id": order_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return {"success": True}
+
 # About Us
 @api_router.get("/about")
 async def get_about():
