@@ -1346,7 +1346,41 @@ const AdminPage = () => {
     );
   }
 
-  return null;
+  return (
+    <>
+      {/* Delete Order Modal */}
+      <Dialog open={deleteOrderModalOpen} onOpenChange={setDeleteOrderModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Удалить заказ</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-gray-600 mb-4">
+              Вы уверены, что хотите удалить заказ от <strong>{orderToDelete?.customer_name}</strong>?
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              Телефон: {orderToDelete?.customer_phone}<br/>
+              Сумма: {orderToDelete?.total} ₸
+            </p>
+            <p className="text-xs text-red-500">
+              Это действие нельзя отменить.
+            </p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setDeleteOrderModalOpen(false)}>
+              Отмена
+            </Button>
+            <Button 
+              onClick={deleteOrder} 
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              Удалить заказ
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 };
 
 export default AdminPage;
