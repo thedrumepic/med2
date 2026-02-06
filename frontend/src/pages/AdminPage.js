@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Package, Grid3X3, ChevronRight, Plus, Pencil, Trash2, LogOut, X, Upload, Settings, ChevronUp, ChevronDown, Users, Tag, Percent } from "lucide-react";
+import { FaBox, FaTh, FaChevronRight, FaPlus, FaPencilAlt, FaTrash, FaSignOutAlt, FaTimes, FaUpload, FaCog, FaChevronUp, FaChevronDown, FaUsers, FaTag, FaPercent } from "react-icons/fa";
 
 const ADMIN_PASSWORD = "secretboost1";
 
