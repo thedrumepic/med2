@@ -196,14 +196,21 @@ const AdminPage = () => {
   };
 
   const deleteProduct = async (id) => {
-    if (!window.confirm("Удалить товар?")) return;
+    if (!productToDelete) return;
     try {
-      await axios.delete(`${API}/products/${id}`, authHeader);
+      await axios.delete(`${API}/products/${productToDelete.id}`, authHeader);
       toast.success("Товар удален");
+      setDeleteProductModalOpen(false);
+      setProductToDelete(null);
       fetchData();
     } catch (error) {
       toast.error("Ошибка удаления товара");
     }
+  };
+
+  const openDeleteProductModal = (product) => {
+    setProductToDelete(product);
+    setDeleteProductModalOpen(true);
   };
 
   // Category CRUD
