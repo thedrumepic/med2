@@ -153,15 +153,24 @@ async def admin_login(data: AdminLogin):
 # Categories
 @api_router.get("/categories", response_model=List[Category])
 async def get_categories():
-    categories = await db.categories.find({}, {"_id": 0}).to_list(100)
+    categories = await db.categories.find({}, {"_id": 0}).sort("order", 1).to_list(100)
     return categories
 
 @api_router.post("/categories", response_model=Category)
 async def create_category(category: CategoryCreate, admin: str = Depends(verify_admin)):
     cat_dict = category.model_dump()
     cat_dict["id"] = str(uuid.uuid4())
+    # Set order to be last
+    max_order = await db.categories.find_one(sort=[("order", -1)])
+    cat_dict["order"] = (max_order.get("order", 0) + 1) if max_order else 0
     await db.categories.insert_one(cat_dict)
     return Category(**cat_dict)
+
+@api_router.post("/categories/reorder")
+async def reorder_categories(category_ids: List[str], admin: str = Depends(verify_admin)):
+    for index, cat_id in enumerate(category_ids):
+        await db.categories.update_one({"id": cat_id}, {"$set": {"order": index}})
+    return {"success": True}
 
 @api_router.put("/categories/{category_id}", response_model=Category)
 async def update_category(category_id: str, category: CategoryCreate, admin: str = Depends(verify_admin)):
