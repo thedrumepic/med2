@@ -1476,6 +1476,18 @@ const AdminPage = () => {
             </div>
           </div>
         </main>
+
+        {/* Icon Selector Modal */}
+        {iconSelectorOpen && (
+          <IconSelector
+            selectedIcon={editingFeatureIndex === null ? newFeatureIcon : aboutForm.features[editingFeatureIndex]?.icon}
+            onSelectIcon={handleIconSelect}
+            onClose={() => {
+              setIconSelectorOpen(false);
+              setEditingFeatureIndex(null);
+            }}
+          />
+        )}
       </div>
     );
   }
