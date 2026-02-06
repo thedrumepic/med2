@@ -42,7 +42,7 @@ const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
           className="absolute right-3 top-3 z-20 p-2 bg-white/90 rounded-full hover:bg-white transition-colors shadow-md"
           data-testid="close-modal-btn"
         >
-          <X className="w-5 h-5 text-foreground" />
+          <FaTimes className="w-5 h-5 text-foreground" />
         </button>
 
         {/* Scrollable Content */}
@@ -114,7 +114,7 @@ const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
               className="w-full bg-primary hover:bg-primary/90 text-white font-black py-5 rounded-xl text-base btn-primary"
               data-testid="add-to-cart-btn"
             >
-              <ShoppingCart className="w-5 h-5 mr-2" />
+              <FaShoppingCart className="w-5 h-5 mr-2" />
               В корзину
             </Button>
           </div>
@@ -185,7 +185,7 @@ const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
                   className="w-full bg-primary hover:bg-primary/90 text-white font-black py-6 rounded-xl text-lg btn-primary"
                   data-testid="add-to-cart-btn-desktop"
                 >
-                  <ShoppingCart className="w-5 h-5 mr-2" />
+                  <FaShoppingCart className="w-5 h-5 mr-2" />
                   В корзину
                 </Button>
               </div>
