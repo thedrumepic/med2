@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Manrope:wght@700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,12 +7,23 @@
 body {
     margin: 0;
     font-family: 'Manrope', sans-serif;
+    font-weight: 700;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+}
+
+/* Глобальные жирные шрифты */
+p, span, a, button, label, input, div {
+    font-weight: 700;
+}
+
+strong, b {
+    font-weight: 900;
 }
 
 code {
