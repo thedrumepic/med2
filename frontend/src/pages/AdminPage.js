@@ -1143,46 +1143,61 @@ const AdminPage = () => {
                   <p className="text-gray-500 text-sm">Заказов пока нет</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-100">
-                      <tr>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Имя</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Телефон</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Сумма</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Промокод</th>
-                        <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">Действия</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {orders.map(order => (
-                        <tr key={order.id} className="hover:bg-gray-50">
-                          <td className="py-3 px-4 text-sm text-gray-800">{order.customer_name}</td>
-                          <td className="py-3 px-4 text-sm text-gray-600">{order.customer_phone}</td>
-                          <td className="py-3 px-4 text-sm font-medium text-gray-800">{order.total} ₸</td>
-                          <td className="py-3 px-4 text-sm">
-                            {order.promocode ? (
-                              <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-medium">
-                                <FaTag className="w-3 h-3" />
-                                {order.promocode}
+                <div className="divide-y divide-gray-100">
+                  {orders.map(order => (
+                    <div key={order.id} className="p-4 hover:bg-gray-50">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-1">
+                            <span className="font-medium text-gray-800">{order.customer_name}</span>
+                            <span className="text-gray-400">•</span>
+                            <span className="text-sm text-gray-600">{order.customer_phone}</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => openDeleteOrderModal(order)}
+                          className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                          title="Удалить заказ"
+                        >
+                          <FaTrash className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      {/* Products list */}
+                      <div className="bg-gray-50 rounded-lg p-3 mb-3">
+                        <p className="text-xs text-gray-500 mb-2 font-medium">Товары:</p>
+                        <div className="space-y-1">
+                          {order.items && order.items.map((item, idx) => (
+                            <div key={idx} className="flex items-center justify-between text-sm">
+                              <span className="text-gray-700">
+                                {item.name} {item.weight && <span className="text-gray-400">({item.weight})</span>}
+                                {item.quantity > 1 && <span className="text-gray-500"> × {item.quantity}</span>}
                               </span>
-                            ) : (
-                              <span className="text-gray-400">—</span>
-                            )}
-                          </td>
-                          <td className="py-3 px-4 text-center">
-                            <button
-                              onClick={() => openDeleteOrderModal(order)}
-                              className="text-gray-400 hover:text-red-500 transition-colors"
-                              title="Удалить заказ"
-                            >
-                              <FaTrash className="w-4 h-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                              <span className="text-gray-600 font-medium">{item.price * item.quantity} ₸</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Footer with total and promo */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="font-semibold text-gray-800">{order.total} ₸</span>
+                          {order.discount > 0 && (
+                            <span className="text-xs text-green-600">(-{order.discount} ₸ скидка)</span>
+                          )}
+                        </div>
+                        {order.promocode ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-medium">
+                            <FaTag className="w-3 h-3" />
+                            {order.promocode}
+                          </span>
+                        ) : (
+                          <span className="text-gray-300 text-xs">Без промокода</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
