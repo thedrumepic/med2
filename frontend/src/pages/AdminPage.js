@@ -275,6 +275,34 @@ const AdminPage = () => {
     }
   };
 
+  // About Us
+  const saveAbout = async () => {
+    try {
+      await axios.put(`${API}/about`, aboutForm, authHeader);
+      toast.success("Раздел 'О нас' обновлен");
+      fetchData();
+    } catch (error) {
+      toast.error("Ошибка сохранения");
+    }
+  };
+
+  const addFeature = () => {
+    if (newFeature.trim()) {
+      setAboutForm(prev => ({
+        ...prev,
+        features: [...prev.features, newFeature.trim()]
+      }));
+      setNewFeature("");
+    }
+  };
+
+  const removeFeature = (index) => {
+    setAboutForm(prev => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index)
+    }));
+  };
+
   const addWeightPrice = () => {
     if (weightInput.weight && weightInput.price) {
       setProductForm(prev => ({
