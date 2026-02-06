@@ -936,56 +936,141 @@ const AdminPage = () => {
           </div>
         </header>
 
-        <main className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-800">Заказы клиентов</h2>
-            <button 
-              onClick={() => setCurrentView("promocodes")}
-              className="text-primary hover:text-primary/80 text-sm font-medium"
-            >
-              Перейти к Промокодам →
-            </button>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            {orders.length === 0 ? (
-              <div className="p-12 text-center">
-                <FaUsers className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-                <p className="text-gray-500">Заказов пока нет</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-100">
-                    <tr>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Имя</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Телефон</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Сумма</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Промокод</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {orders.map(order => (
-                      <tr key={order.id} className="hover:bg-gray-50">
-                        <td className="py-3 px-4 text-sm text-gray-800">{order.customer_name}</td>
-                        <td className="py-3 px-4 text-sm text-gray-600">{order.customer_phone}</td>
-                        <td className="py-3 px-4 text-sm font-medium text-gray-800">{order.total} ₸</td>
-                        <td className="py-3 px-4 text-sm">
-                          {order.promocode ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-medium">
-                              <FaTag className="w-3 h-3" />
-                              {order.promocode}
-                            </span>
-                          ) : (
-                            <span className="text-gray-400">—</span>
-                          )}
-                        </td>
+        <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+          {/* Orders Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold text-gray-800">Заказы клиентов ({orders.length})</h2>
+              {orders.length > 0 && (
+                <button 
+                  onClick={() => deleteDataByType('orders', 'Заказы')}
+                  className="text-red-500 hover:text-red-600 text-sm font-medium flex items-center gap-1"
+                >
+                  <FaTrash className="w-3 h-3" />
+                  Очистить заказы
+                </button>
+              )}
+            </div>
+            
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+              {orders.length === 0 ? (
+                <div className="p-8 text-center">
+                  <FaUsers className="w-10 h-10 text-gray-200 mx-auto mb-3" />
+                  <p className="text-gray-500 text-sm">Заказов пока нет</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-100">
+                      <tr>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Имя</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Телефон</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Сумма</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Промокод</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {orders.map(order => (
+                        <tr key={order.id} className="hover:bg-gray-50">
+                          <td className="py-3 px-4 text-sm text-gray-800">{order.customer_name}</td>
+                          <td className="py-3 px-4 text-sm text-gray-600">{order.customer_phone}</td>
+                          <td className="py-3 px-4 text-sm font-medium text-gray-800">{order.total} ₸</td>
+                          <td className="py-3 px-4 text-sm">
+                            {order.promocode ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-medium">
+                                <FaTag className="w-3 h-3" />
+                                {order.promocode}
+                              </span>
+                            ) : (
+                              <span className="text-gray-400">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Selective Deletion Section */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <FaTrash className="w-4 h-4 text-red-500" />
+              Выборочное удаление данных
+            </h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+              <button
+                onClick={() => deleteDataByType('orders', 'Заказы')}
+                className="p-4 border border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <FaUsers className="w-4 h-4 text-green-500 group-hover:text-red-500" />
+                  <span className="font-medium text-gray-800 text-sm">Заказы</span>
+                </div>
+                <span className="text-xs text-gray-500">{orders.length} записей</span>
+              </button>
+
+              <button
+                onClick={() => deleteDataByType('products', 'Товары')}
+                className="p-4 border border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <FaBox className="w-4 h-4 text-blue-500 group-hover:text-red-500" />
+                  <span className="font-medium text-gray-800 text-sm">Товары</span>
+                </div>
+                <span className="text-xs text-gray-500">{products.length} записей</span>
+              </button>
+
+              <button
+                onClick={() => deleteDataByType('categories', 'Категории')}
+                className="p-4 border border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <FaTh className="w-4 h-4 text-purple-500 group-hover:text-red-500" />
+                  <span className="font-medium text-gray-800 text-sm">Категории</span>
+                </div>
+                <span className="text-xs text-gray-500">{categories.length} записей</span>
+              </button>
+
+              <button
+                onClick={() => deleteDataByType('promocodes', 'Промокоды')}
+                className="p-4 border border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <FaTag className="w-4 h-4 text-orange-500 group-hover:text-red-500" />
+                  <span className="font-medium text-gray-800 text-sm">Промокоды</span>
+                </div>
+                <span className="text-xs text-gray-500">{promocodes.length} записей</span>
+              </button>
+
+              <button
+                onClick={() => deleteDataByType('about', 'Блок О нас')}
+                className="p-4 border border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <FaUsers className="w-4 h-4 text-amber-500 group-hover:text-red-500" />
+                  <span className="font-medium text-gray-800 text-sm">О нас</span>
+                </div>
+                <span className="text-xs text-gray-500">Блок на главной</span>
+              </button>
+            </div>
+
+            {/* Delete All Button */}
+            <div className="pt-4 border-t border-gray-100">
+              <button
+                onClick={deleteAllData}
+                className="w-full p-4 bg-red-50 border-2 border-red-200 rounded-xl hover:bg-red-100 hover:border-red-300 transition-colors flex items-center justify-center gap-2 text-red-600 font-semibold"
+              >
+                <FaTrash className="w-4 h-4" />
+                Удалить ВСЕ данные
+              </button>
+              <p className="text-xs text-gray-400 text-center mt-2">
+                ⚠️ Это действие удалит все данные сайта и не может быть отменено
+              </p>
+            </div>
           </div>
         </main>
       </div>
