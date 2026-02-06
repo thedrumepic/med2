@@ -32,6 +32,7 @@ const AdminPage = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [promocodes, setPromocodes] = useState([]);
+  const [aboutData, setAboutData] = useState(null);
   const [currentView, setCurrentView] = useState("dashboard");
   
   // Modal states
@@ -57,6 +58,12 @@ const AdminPage = () => {
     discount_value: "",
     max_uses: ""
   });
+  const [aboutForm, setAboutForm] = useState({
+    title: "",
+    description: "",
+    features: []
+  });
+  const [newFeature, setNewFeature] = useState("");
   const [weightInput, setWeightInput] = useState({ weight: "", price: "" });
 
   const authHeader = {
