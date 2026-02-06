@@ -417,6 +417,50 @@ async def fix_categories():
     
     return {"message": "Categories fixed", "count": len(categories)}
 
+# Selective data deletion
+@api_router.delete("/data/orders")
+async def delete_all_orders(admin: str = Depends(verify_admin)):
+    result = await db.orders.delete_many({})
+    return {"message": "All orders deleted", "deleted_count": result.deleted_count}
+
+@api_router.delete("/data/products")
+async def delete_all_products(admin: str = Depends(verify_admin)):
+    result = await db.products.delete_many({})
+    return {"message": "All products deleted", "deleted_count": result.deleted_count}
+
+@api_router.delete("/data/categories")
+async def delete_all_categories(admin: str = Depends(verify_admin)):
+    result = await db.categories.delete_many({})
+    return {"message": "All categories deleted", "deleted_count": result.deleted_count}
+
+@api_router.delete("/data/promocodes")
+async def delete_all_promocodes(admin: str = Depends(verify_admin)):
+    result = await db.promocodes.delete_many({})
+    return {"message": "All promocodes deleted", "deleted_count": result.deleted_count}
+
+@api_router.delete("/data/about")
+async def delete_about(admin: str = Depends(verify_admin)):
+    result = await db.about.delete_many({})
+    return {"message": "About data deleted", "deleted_count": result.deleted_count}
+
+@api_router.delete("/data/all")
+async def delete_all_data(admin: str = Depends(verify_admin)):
+    orders = await db.orders.delete_many({})
+    products = await db.products.delete_many({})
+    categories = await db.categories.delete_many({})
+    promocodes = await db.promocodes.delete_many({})
+    about = await db.about.delete_many({})
+    return {
+        "message": "All data deleted",
+        "deleted": {
+            "orders": orders.deleted_count,
+            "products": products.deleted_count,
+            "categories": categories.deleted_count,
+            "promocodes": promocodes.deleted_count,
+            "about": about.deleted_count
+        }
+    }
+
 app.include_router(api_router)
 
 app.add_middleware(
