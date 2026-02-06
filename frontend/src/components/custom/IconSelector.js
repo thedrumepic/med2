@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { 
   FaCheck, FaCheckCircle, FaStar, FaHeart, FaLeaf, FaTruck, 
   FaShieldAlt, FaCertificate, FaAward, FaMedal, FaGem, 
@@ -8,7 +7,7 @@ import {
   FaHome, FaStore, FaWarehouse, FaIndustry, FaHospital,
   FaClock, FaCalendar, FaPhone, FaEnvelope, FaMapMarker,
   FaDollar, FaCreditCard, FaGift, FaPercent, FaChartLine,
-  FaBox, FaShoppingCart, FaRecycle, FaLeaf as FaPlant
+  FaBox, FaShoppingCart, FaRecycle
 } from "react-icons/fa";
 
 const iconList = [
