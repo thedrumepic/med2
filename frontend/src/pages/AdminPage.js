@@ -1113,6 +1113,43 @@ const AdminPage = () => {
           itemData={orderToDelete}
           itemType="order"
         />
+
+        {/* Clear All Orders Modal */}
+        <Dialog open={clearOrdersModalOpen} onOpenChange={setClearOrdersModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Подтверждение очистки заказов</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-gray-600 mb-4">
+                Вы уверены, что хотите удалить ВСЕ заказы?
+              </p>
+              <div className="bg-red-50 rounded-lg p-3 mb-4">
+                <div className="flex items-center gap-2 text-red-600 text-sm font-medium mb-1">
+                  <FaUsers className="w-4 h-4" />
+                  Будет удалено: {orders.length} заказов
+                </div>
+              </div>
+              <p className="text-xs text-red-600">
+                ⚠️ Это действие нельзя отменить
+              </p>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => setClearOrdersModalOpen(false)}
+              >
+                Отмена
+              </Button>
+              <Button 
+                onClick={clearOrders}
+                className="bg-red-500 hover:bg-red-600 text-white"
+              >
+                Удалить все
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
       </>
     );
