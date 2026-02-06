@@ -99,7 +99,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
     // Limit to 11 digits (7 + 10 digits)
     digits = digits.slice(0, 11);
     
-    // Format: +7 (XXX) XXX-XX-XX
+    // Format: +7 (XXX) XXX XX XX
     let formatted = '+7';
     if (digits.length > 1) {
       formatted += ' (' + digits.slice(1, 4);
@@ -108,10 +108,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
       formatted += ') ' + digits.slice(4, 7);
     }
     if (digits.length >= 7) {
-      formatted += '-' + digits.slice(7, 9);
+      formatted += ' ' + digits.slice(7, 9);
     }
     if (digits.length >= 9) {
-      formatted += '-' + digits.slice(9, 11);
+      formatted += ' ' + digits.slice(9, 11);
     }
     
     return formatted;
