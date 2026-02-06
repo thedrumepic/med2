@@ -204,11 +204,11 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-xs md:text-sm text-foreground line-clamp-1">
+                    <h4 className="font-black text-xs md:text-sm text-foreground line-clamp-1">
                       {item.name}
                       {item.weight && <span className="text-primary ml-1">({item.weight})</span>}
                     </h4>
-                    <p className="text-primary font-bold text-xs md:text-sm mt-0.5 md:mt-1">
+                    <p className="text-primary font-black text-xs md:text-sm mt-0.5 md:mt-1">
                       {item.price} ₸
                     </p>
                     <div className="flex items-center gap-1 md:gap-2 mt-1 md:mt-2">
@@ -219,7 +219,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       >
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="font-semibold text-xs md:text-sm w-5 md:w-6 text-center">{item.quantity}</span>
+                      <span className="font-black text-xs md:text-sm w-5 md:w-6 text-center">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, 1)}
                         className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-white border border-border flex items-center justify-center hover:bg-secondary transition-colors"
