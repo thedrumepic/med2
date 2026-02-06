@@ -40,7 +40,7 @@ const CategoryFilter = ({ categories, selectedCategory, onSelectCategory }) => {
         }`}
         aria-label="Прокрутить влево"
       >
-        <ChevronLeft className="w-4 h-4 text-primary" />
+        <FaChevronLeft className="w-4 h-4 text-primary" />
       </button>
 
       {/* Left Fade */}
@@ -101,7 +101,7 @@ const CategoryFilter = ({ categories, selectedCategory, onSelectCategory }) => {
         }`}
         aria-label="Прокрутить вправо"
       >
-        <ChevronRight className="w-4 h-4 text-primary" />
+        <FaChevronRight className="w-4 h-4 text-primary" />
       </button>
     </div>
   );
