@@ -95,7 +95,7 @@ const HomePage = () => {
               className="relative p-2 hover:bg-secondary rounded-full transition-colors"
               data-testid="cart-button"
             >
-              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              <FaShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] md:text-xs w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center font-semibold">
                   {cartItemsCount}
@@ -125,7 +125,7 @@ const HomePage = () => {
           Натуральный мёд и пчелопродукты с пасеки прямо к вам
         </p>
         <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-sm border border-border/50">
-          <Heart className="w-4 h-4 md:w-5 md:h-5 text-red-500 fill-red-500" />
+          <FaHeart className="w-4 h-4 md:w-5 md:h-5 text-red-500" />
           <span className="text-xs md:text-sm font-black text-foreground">100% Натурально</span>
         </div>
       </section>
@@ -171,7 +171,7 @@ const HomePage = () => {
         <section className="py-12 md:py-16 px-3 md:px-8 bg-white">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Bug className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+              <GiHoneycomb className="w-6 h-6 md:w-8 md:h-8 text-primary" />
               <h2 className="text-2xl md:text-3xl font-black text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
                 {aboutData.title}
               </h2>
