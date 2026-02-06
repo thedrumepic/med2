@@ -242,14 +242,21 @@ const AdminPage = () => {
   };
 
   const deleteCategory = async (id) => {
-    if (!window.confirm("Удалить категорию?")) return;
+    if (!categoryToDelete) return;
     try {
-      await axios.delete(`${API}/categories/${id}`, authHeader);
+      await axios.delete(`${API}/categories/${categoryToDelete.id}`, authHeader);
       toast.success("Категория удалена");
+      setDeleteCategoryModalOpen(false);
+      setCategoryToDelete(null);
       fetchData();
     } catch (error) {
       toast.error("Ошибка удаления категории");
     }
+  };
+
+  const openDeleteCategoryModal = (category) => {
+    setCategoryToDelete(category);
+    setDeleteCategoryModalOpen(true);
   };
 
   // Promocode CRUD
