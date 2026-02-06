@@ -1105,55 +1105,7 @@ const AdminPage = () => {
           </div>
         </main>
 
-        {/* Delete Order Confirmation Modal */}
-        <Dialog open={deleteOrderModalOpen} onOpenChange={setDeleteOrderModalOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Подтверждение удаления</DialogTitle>
-            </DialogHeader>
-            <div className="py-4">
-              <p className="text-gray-600 mb-4">
-                Вы уверены, что хотите удалить этот заказ?
-              </p>
-              {orderToDelete && (
-                <div className="bg-gray-50 rounded-lg p-3 space-y-1 mb-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Клиент:</span>
-                    <span className="font-medium text-gray-800">{orderToDelete.customer_name}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Телефон:</span>
-                    <span className="font-medium text-gray-800">{orderToDelete.customer_phone}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Сумма:</span>
-                    <span className="font-medium text-gray-800">{orderToDelete.total} ₸</span>
-                  </div>
-                </div>
-              )}
-              <p className="text-xs text-red-600">
-                ⚠️ Это действие нельзя отменить
-              </p>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setDeleteOrderModalOpen(false);
-                  setOrderToDelete(null);
-                }}
-              >
-                Отмена
-              </Button>
-              <Button 
-                onClick={deleteOrder} 
-                className="bg-red-500 hover:bg-red-600 text-white"
-              >
-                Удалить
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+ 
       </div>
     );
   }
