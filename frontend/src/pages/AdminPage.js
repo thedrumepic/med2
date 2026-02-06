@@ -282,6 +282,26 @@ const AdminPage = () => {
     setDeleteCategoryModalOpen(true);
   };
 
+  // Drag and Drop for categories
+  const handleCategoryDragEnd = async (result) => {
+    if (!result.destination) return;
+    
+    const items = Array.from(categories);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    
+    setCategories(items);
+    
+    // Save new order to backend
+    try {
+      const categoryIds = items.map(cat => cat.id);
+      await axios.post(`${API}/categories/reorder`, categoryIds, authHeader);
+    } catch (error) {
+      toast.error("Ошибка сохранения порядка");
+      fetchData(); // Revert on error
+    }
+  };
+
   // Promocode CRUD
   const openPromocodeModal = () => {
     setPromocodeForm({
