@@ -994,28 +994,44 @@ const AdminPage = () => {
           </div>
           
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            <div className="space-y-3">
-              {categories.map((category, index) => (
-                <div 
-                  key={category.id} 
-                  className="flex items-center gap-4 py-3 border-b border-gray-100 last:border-0"
-                >
-                  <span className="w-8 h-8 flex items-center justify-center text-sm text-primary/60 font-medium">
-                    {index + 1}
-                  </span>
-                  <span className="flex-1 text-gray-700">{category.name}</span>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => openDeleteCategoryModal(category)}
-                    className="text-gray-300 hover:text-red-500"
-                    data-testid={`delete-category-${category.id}`}
-                  >
-                    <FaTrash className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+            <p className="text-xs text-gray-400 mb-3">Перетащите для изменения порядка</p>
+            <DragDropContext onDragEnd={handleCategoryDragEnd}>
+              <Droppable droppableId="categories">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-2">
+                    {categories.map((category, index) => (
+                      <Draggable key={category.id} draggableId={category.id} index={index}>
+                        {(provided, snapshot) => (
+                          <div 
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={`flex items-center gap-3 py-3 px-3 rounded-xl border ${snapshot.isDragging ? 'border-primary bg-primary/5 shadow-lg' : 'border-gray-100 bg-white'}`}
+                          >
+                            <div {...provided.dragHandleProps} className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-500">
+                              <FaGripVertical className="w-4 h-4" />
+                            </div>
+                            <span className="w-6 h-6 flex items-center justify-center text-xs text-primary/60 font-medium bg-primary/10 rounded-full">
+                              {index + 1}
+                            </span>
+                            <span className="flex-1 text-gray-700">{category.name}</span>
+                            <Button 
+                              variant="ghost" 
+                              size="icon"
+                              onClick={() => openDeleteCategoryModal(category)}
+                              className="text-gray-300 hover:text-red-500"
+                              data-testid={`delete-category-${category.id}`}
+                            >
+                              <FaTrash className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
 
             <button
               onClick={() => openCategoryModal()}
