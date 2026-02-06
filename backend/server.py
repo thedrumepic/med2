@@ -115,16 +115,20 @@ class Order(BaseModel):
     created_at: str
 
 # About Us model
+class Feature(BaseModel):
+    text: str
+    icon: str = "FaCheck"  # Default icon
+
 class AboutUsUpdate(BaseModel):
     title: str
     description: str
-    features: List[str]
+    features: List[Feature]
 
 class AboutUs(BaseModel):
     id: str
     title: str
     description: str
-    features: List[str]
+    features: List[Feature]
 
 # Helper functions
 def verify_admin(credentials: HTTPBasicCredentials = Depends(security)):
