@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/App";
-import { FaShoppingCart, FaHeart, FaLeaf, FaAward, FaTruck } from "react-icons/fa";
+import { 
+  FaShoppingCart, FaHeart, FaLeaf, FaAward, FaTruck,
+  FaCheck, FaCheckCircle, FaStar, FaShieldAlt, FaCertificate, 
+  FaMedal, FaGem, FaHandshake, FaUserCheck, FaThumbsUp, 
+  FaSmile, FaLightbulb, FaBolt, FaFire, FaSun, FaMoon, 
+  FaCloud, FaSnowflake, FaHome, FaStore, FaWarehouse, 
+  FaIndustry, FaHospital, FaClock, FaCalendar, FaPhone, 
+  FaEnvelope, FaMapMarker, FaDollar, FaCreditCard, FaGift, 
+  FaPercent, FaChartLine, FaBox, FaRecycle
+} from "react-icons/fa";
 import { GiHoneycomb } from "react-icons/gi";
 import ProductCard from "@/components/custom/ProductCard";
 import ProductModal from "@/components/custom/ProductModal";
@@ -9,6 +18,22 @@ import CategoryFilter from "@/components/custom/CategoryFilter";
 import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Icon mapping
+const iconComponents = {
+  FaCheck, FaCheckCircle, FaStar, FaHeart, FaLeaf, FaTruck, 
+  FaShieldAlt, FaCertificate, FaAward, FaMedal, FaGem, 
+  FaHandshake, FaUserCheck, FaThumbsUp, FaSmile, FaLightbulb,
+  FaBolt, FaFire, FaSun, FaMoon, FaCloud, FaSnowflake,
+  FaHome, FaStore, FaWarehouse, FaIndustry, FaHospital,
+  FaClock, FaCalendar, FaPhone, FaEnvelope, FaMapMarker,
+  FaDollar, FaCreditCard, FaGift, FaPercent, FaChartLine,
+  FaBox, FaShoppingCart, FaRecycle
+};
+
+const getIconComponent = (iconName) => {
+  return iconComponents[iconName] || FaCheckCircle;
+};
 
 const HomePage = () => {
   const { categories, products, loading, cart } = useCart();
