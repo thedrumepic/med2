@@ -479,6 +479,15 @@ const CartDrawer = ({ isOpen, onClose }) => {
           </div>
         )}
       </SheetContent>
+      
+      {/* Redirect Notification */}
+      <RedirectNotification 
+        isOpen={showRedirectNotification}
+        onClose={() => setShowRedirectNotification(false)}
+        messenger={redirectMessenger}
+        countdown={redirectCountdown}
+        url={redirectUrl}
+      />
     </Sheet>
   );
 };
