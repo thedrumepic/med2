@@ -275,6 +275,30 @@ const AdminPage = () => {
     }
   };
 
+  // Selective data deletion functions
+  const deleteDataByType = async (type, label) => {
+    if (!window.confirm(`Вы уверены, что хотите удалить все ${label}? Это действие нельзя отменить!`)) return;
+    try {
+      await axios.delete(`${API}/data/${type}`, authHeader);
+      toast.success(`${label} удалены`);
+      fetchData();
+    } catch (error) {
+      toast.error(`Ошибка удаления: ${error.message}`);
+    }
+  };
+
+  const deleteAllData = async () => {
+    if (!window.confirm("⚠️ ВНИМАНИЕ! Вы собираетесь удалить ВСЕ данные сайта. Это действие НЕЛЬЗЯ отменить! Продолжить?")) return;
+    if (!window.confirm("Это последнее предупреждение. Все товары, категории, заказы и промокоды будут удалены. Вы точно уверены?")) return;
+    try {
+      await axios.delete(`${API}/data/all`, authHeader);
+      toast.success("Все данные удалены");
+      fetchData();
+    } catch (error) {
+      toast.error(`Ошибка удаления: ${error.message}`);
+    }
+  };
+
   // About Us
   const saveAbout = async () => {
     try {
