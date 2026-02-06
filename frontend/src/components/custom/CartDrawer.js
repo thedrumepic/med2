@@ -147,10 +147,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
   };
 
   const formatOrderMessage = () => {
-    let message = `🐝 Новый заказ от Ферма Медовик!\n\n`;
-    message += `👤 Имя: ${customerName}\n`;
-    message += `📞 Телефон: ${customerPhone}\n\n`;
-    message += `📦 Заказ:\n`;
+    let message = `Новый заказ от Ферма Медовик!\n\n`;
+    message += `Имя: ${customerName}\n`;
+    message += `Телефон: ${customerPhone}\n\n`;
+    message += `Заказ:\n`;
     
     cart.forEach((item, index) => {
       message += `${index + 1}. ${item.name}`;
@@ -158,11 +158,11 @@ const CartDrawer = ({ isOpen, onClose }) => {
       message += ` - ${item.quantity} шт. x ${item.price} ₸ = ${item.quantity * item.price} ₸\n`;
     });
     
-    message += `\n💵 Сумма: ${cartTotal} ₸`;
+    message += `\nСумма: ${cartTotal} ₸`;
     if (appliedPromo) {
-      message += `\n🏷️ Промокод: ${appliedPromo.code} (-${discount} ₸)`;
+      message += `\nПромокод: ${appliedPromo.code} (-${discount} ₸)`;
     }
-    message += `\n💰 Итого: ${finalTotal} ₸`;
+    message += `\nИтого: ${finalTotal} ₸`;
     return message;
   };
 
