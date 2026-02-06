@@ -3,7 +3,7 @@ import { useCart } from "@/App";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "@/components/ui/button";
-import { X, ShoppingCart } from "lucide-react";
+import { FaTimes, FaShoppingCart } from "react-icons/fa";
 
 const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
   const { addToCart } = useCart();
