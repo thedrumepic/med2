@@ -277,7 +277,8 @@ const CartDrawer = ({ isOpen, onClose }) => {
   const orderViaTelegram = () => {
     if (!validateOrder()) return;
     
-    const telegramUrl = `https://t.me/fermamedovik`;
+    const message = encodeURIComponent(formatOrderMessage());
+    const telegramUrl = `https://t.me/fermamedovik?text=${message}`;
     
     // Сохраняем заказ в фоновом режиме
     saveOrder().then(saved => {
