@@ -179,7 +179,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
     
     <SheetHeader className="p-4 border-b border-border/50 flex-shrink-0 flex-row items-center justify-between space-y-0">
       <SheetTitle className="flex items-center gap-2 text-foreground" style={{ fontFamily: 'Nunito, sans-serif' }}>
-        <ShoppingCart className="w-5 h-5 text-primary" />
+        <FaShoppingCart className="w-5 h-5 text-primary" />
         Корзина
       </SheetTitle>
       
@@ -196,7 +196,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
         <div className="flex-1 overflow-y-auto cart-scroll overscroll-contain min-h-0">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-12 px-4 text-center min-h-[200px]">
-              <ShoppingCart className="w-12 h-12 md:w-16 md:h-16 text-muted-foreground/30 mb-4" />
+              <FaShoppingCart className="w-12 h-12 md:w-16 md:h-16 text-muted-foreground/30 mb-4" />
               <p className="text-muted-foreground font-medium">Ваши товары тут</p>
               <p className="text-sm text-muted-foreground/70 mt-1">Добавьте товары в корзину</p>
             </div>
@@ -227,7 +227,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                         className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-white border border-border flex items-center justify-center hover:bg-secondary transition-colors"
                         data-testid={`decrease-qty-${item.id}`}
                       >
-                        <Minus className="w-3 h-3" />
+                        <FaMinus className="w-3 h-3" />
                       </button>
                       <span className="font-black text-xs md:text-sm w-5 md:w-6 text-center">{item.quantity}</span>
                       <button
@@ -235,7 +235,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                         className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-white border border-border flex items-center justify-center hover:bg-secondary transition-colors"
                         data-testid={`increase-qty-${item.id}`}
                       >
-                        <Plus className="w-3 h-3" />
+                        <FaPlus className="w-3 h-3" />
                       </button>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                     data-testid={`remove-item-${item.id}`}
                   >
-                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                    <FaTimes className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                 </div>
               ))}
