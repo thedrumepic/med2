@@ -74,6 +74,9 @@ const AdminPage = () => {
     features: []
   });
   const [newFeature, setNewFeature] = useState("");
+  const [newFeatureIcon, setNewFeatureIcon] = useState("FaCheckCircle");
+  const [iconSelectorOpen, setIconSelectorOpen] = useState(false);
+  const [editingFeatureIndex, setEditingFeatureIndex] = useState(null);
   const [weightInput, setWeightInput] = useState({ weight: "", price: "" });
 
   const authHeader = {
