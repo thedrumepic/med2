@@ -5,13 +5,32 @@ const ProductCard = ({ product, category, onOpenModal }) => {
     ? `от ${Math.min(...product.weight_prices.map(wp => wp.price))}`
     : product.base_price;
 
+  // Обработчик клика на весь контейнер карточки
+  const handleCardClick = (e) => {
+    // Предотвращаем всплытие только если это не кнопка (кнопка сама вызовет onOpenModal)
+    // Для всех остальных элементов - открываем модальное окно
+    if (e.target.closest('button')) {
+      return; // Кнопка сама обработает клик
+    }
+    onOpenModal();
+  };
+
   return (
     <div 
-      className="product-card bg-white rounded-xl overflow-hidden border border-amber-100 hover:border-amber-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+      className="product-card bg-white rounded-xl overflow-hidden border border-amber-100 hover:border-amber-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer transition-all duration-200 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:scale-[1.02]"
       data-testid={`product-card-${product.id}`}
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpenModal();
+        }
+      }}
     >
-      {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-amber-50">
+      {/* Image Container - pointer-events-none чтобы клики проходили к родителю */}
+      <div className="relative aspect-square overflow-hidden bg-amber-50 pointer-events-none">
         <img
           src={product.image}
           alt={product.name}
@@ -30,8 +49,8 @@ const ProductCard = ({ product, category, onOpenModal }) => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-3 md:p-4">
+      {/* Content - pointer-events-none для текста, но pointer-events-auto для кнопки */}
+      <div className="p-3 md:p-4 pointer-events-none">
         <h3 className="font-semibold text-foreground mb-1 line-clamp-1 text-sm md:text-base" style={{ fontFamily: 'Nunito, sans-serif' }}>
           {product.name}
         </h3>
@@ -42,7 +61,7 @@ const ProductCard = ({ product, category, onOpenModal }) => {
 
         <Button
           onClick={onOpenModal}
-          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2 md:py-2.5 rounded-lg btn-primary text-sm md:text-base"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2 md:py-2.5 rounded-lg btn-primary text-sm md:text-base pointer-events-auto"
           data-testid={`select-product-${product.id}`}
         >
           Выбрать
