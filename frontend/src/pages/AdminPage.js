@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FaBox, FaTh, FaChevronRight, FaPlus, FaPencilAlt, FaTrash, FaSignOutAlt, FaTimes, FaUpload, FaCog, FaChevronUp, FaChevronDown, FaUsers, FaTag, FaPercent, FaCheckCircle, FaCheck, FaStar, FaHeart, FaLeaf, FaTruck, FaShieldAlt, FaCertificate, FaAward, FaMedal, FaGem, FaHandshake, FaUserCheck, FaThumbsUp, FaSmile, FaLightbulb, FaBolt, FaFire, FaSun, FaMoon, FaCloud, FaSnowflake, FaHome, FaStore, FaWarehouse, FaIndustry, FaHospital, FaClock, FaCalendar, FaPhone, FaEnvelope, FaMapMarker, FaDollar, FaCreditCard, FaGift, FaChartLine, FaShoppingCart, FaRecycle } from "react-icons/fa";
+import { FaBox, FaTh, FaChevronRight, FaPlus, FaPencilAlt, FaTrash, FaSignOutAlt, FaTimes, FaUpload, FaCog, FaChevronUp, FaChevronDown, FaUsers, FaTag, FaPercent, FaCheckCircle, FaCheck, FaStar, FaHeart, FaLeaf, FaTruck, FaShieldAlt, FaCertificate, FaAward, FaMedal, FaGem, FaHandshake, FaUserCheck, FaThumbsUp, FaSmile, FaLightbulb, FaBolt, FaFire, FaSun, FaMoon, FaCloud, FaSnowflake, FaHome, FaStore, FaWarehouse, FaIndustry, FaHospital, FaClock, FaCalendarAlt, FaPhone, FaEnvelope, FaMapMarkerAlt, FaDollarSign, FaCreditCard, FaGift, FaChartLine, FaShoppingCart, FaRecycle } from "react-icons/fa";
 import DeleteConfirmDialog from "@/components/custom/DeleteConfirmDialog";
 import { IconSelector } from "@/components/custom/IconSelector";
 
@@ -33,8 +33,8 @@ const iconComponents = {
   FaHandshake, FaUserCheck, FaThumbsUp, FaSmile, FaLightbulb,
   FaBolt, FaFire, FaSun, FaMoon, FaCloud, FaSnowflake,
   FaHome, FaStore, FaWarehouse, FaIndustry, FaHospital,
-  FaClock, FaCalendar, FaPhone, FaEnvelope, FaMapMarker,
-  FaDollar, FaCreditCard, FaGift, FaPercent, FaChartLine,
+  FaClock, FaCalendarAlt, FaPhone, FaEnvelope, FaMapMarkerAlt,
+  FaDollarSign, FaCreditCard, FaGift, FaPercent, FaChartLine,
   FaBox, FaShoppingCart, FaRecycle
 };
 
