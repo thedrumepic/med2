@@ -216,7 +216,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
   };
 
   // Функция открытия внешней ссылки с учётом окружения
-  const openExternalLink = (url, isTelegramLink = false) => {
+  const openExternalLink = useCallback((url, isTelegramLink = false) => {
     if (isTelegramWebApp()) {
       const tg = window.Telegram.WebApp;
       if (isTelegramLink && tg.openTelegramLink) {
@@ -233,7 +233,26 @@ const CartDrawer = ({ isOpen, onClose }) => {
       // Для Safari и других браузеров - прямой переход
       window.location.href = url;
     }
-  };
+  }, []);
+
+  // Эффект для обратного отсчёта и перехода
+  useEffect(() => {
+    let timer;
+    if (showRedirectNotification && redirectCountdown > 0) {
+      timer = setTimeout(() => {
+        setRedirectCountdown(prev => prev - 1);
+      }, 1000);
+    } else if (showRedirectNotification && redirectCountdown === 0) {
+      // Выполняем переход
+      const isTelegramLink = redirectMessenger === 'telegram';
+      openExternalLink(redirectUrl, isTelegramLink);
+      
+      // Сбрасываем состояние
+      setShowRedirectNotification(false);
+      setRedirectCountdown(4);
+    }
+    return () => clearTimeout(timer);
+  }, [showRedirectNotification, redirectCountdown, redirectUrl, redirectMessenger, openExternalLink]);
 
   const orderViaWhatsApp = () => {
     if (!validateOrder()) return;
@@ -241,15 +260,18 @@ const CartDrawer = ({ isOpen, onClose }) => {
     const message = encodeURIComponent(formatOrderMessage());
     const whatsappUrl = `https://wa.me/77083214571?text=${message}`;
     
-    // Сначала открываем ссылку (синхронно, до любых await)
-    openExternalLink(whatsappUrl, false);
-    
     // Сохраняем заказ в фоновом режиме
     saveOrder().then(saved => {
       if (saved) {
         console.log("Order saved in background");
       }
     });
+    
+    // Показываем уведомление с обратным отсчётом
+    setRedirectUrl(whatsappUrl);
+    setRedirectMessenger('whatsapp');
+    setRedirectCountdown(4);
+    setShowRedirectNotification(true);
   };
 
   const orderViaTelegram = () => {
@@ -257,15 +279,18 @@ const CartDrawer = ({ isOpen, onClose }) => {
     
     const telegramUrl = `https://t.me/fermamedovik`;
     
-    // Сначала открываем ссылку (синхронно, до любых await)
-    openExternalLink(telegramUrl, true);
-    
     // Сохраняем заказ в фоновом режиме
     saveOrder().then(saved => {
       if (saved) {
         console.log("Order saved in background");
       }
     });
+    
+    // Показываем уведомление с обратным отсчётом
+    setRedirectUrl(telegramUrl);
+    setRedirectMessenger('telegram');
+    setRedirectCountdown(4);
+    setShowRedirectNotification(true);
   };
 
   return (
