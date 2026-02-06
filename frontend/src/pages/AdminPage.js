@@ -326,6 +326,21 @@ const AdminPage = () => {
   };
 
   // Selective data deletion functions
+  const clearOrders = async () => {
+    try {
+      await axios.delete(`${API}/data/orders`, authHeader);
+      toast.success("Заказы очищены");
+      setClearOrdersModalOpen(false);
+      fetchData();
+    } catch (error) {
+      toast.error(`Ошибка удаления: ${error.message}`);
+    }
+  };
+
+  const openClearOrdersModal = () => {
+    setClearOrdersModalOpen(true);
+  };
+
   const deleteDataByType = async (type, label) => {
     if (!window.confirm(`Вы уверены, что хотите удалить все ${label}? Это действие нельзя отменить!`)) return;
     try {
