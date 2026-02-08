@@ -287,7 +287,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
     // Показываем уведомление с обратным отсчётом
     setRedirectUrl(telegramUrl);
     setRedirectMessenger('telegram');
-    setRedirectCountdown(4);
+    setRedirectCountdown(10);
     setShowRedirectNotification(true);
   };
 
