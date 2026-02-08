@@ -75,7 +75,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
   // State for redirect notification
   const [showRedirectNotification, setShowRedirectNotification] = useState(false);
   const [redirectMessenger, setRedirectMessenger] = useState(null);
-  const [redirectCountdown, setRedirectCountdown] = useState(4);
+  const [redirectCountdown, setRedirectCountdown] = useState(10);
   const [redirectUrl, setRedirectUrl] = useState("");
 
   const discount = appliedPromo?.discount || 0;
