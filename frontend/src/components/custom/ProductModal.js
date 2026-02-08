@@ -151,9 +151,17 @@ const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
               </h2>
 
               {product.description && (
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6 font-bold">
-                  {product.description}
-                </p>
+                <div className="mb-6 bg-gradient-to-b from-amber-50/80 to-amber-50/40 rounded-xl border border-amber-200/50 overflow-hidden">
+                  <div className="max-h-32 overflow-y-auto overscroll-contain p-4 scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent">
+                    <p className="text-foreground leading-relaxed font-medium" style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                      {product.description}
+                    </p>
+                  </div>
+                  {/* Scroll indicator for long descriptions */}
+                  <div className="text-center py-1.5 bg-amber-100/50 border-t border-amber-200/30">
+                    <span className="text-xs text-amber-600 font-bold">↕ прокрутите для чтения полного описания</span>
+                  </div>
+                </div>
               )}
 
               {hasWeights && (
