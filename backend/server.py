@@ -24,6 +24,15 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 security = HTTPBasic()
 
+# Health check endpoints for Kubernetes ingress
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "service": "honey-shop-api"}
+
 ADMIN_USERNAME = "armanuha"
 ADMIN_PASSWORD = "secretboost1"
 
