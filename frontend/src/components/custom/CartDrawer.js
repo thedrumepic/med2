@@ -246,7 +246,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
       
       // Сбрасываем состояние
       setShowRedirectNotification(false);
-      setRedirectCountdown(4);
+      setRedirectCountdown(10);
     }
     return () => clearTimeout(timer);
   }, [showRedirectNotification, redirectCountdown, redirectUrl, redirectMessenger, openExternalLink]);
