@@ -68,11 +68,19 @@ const ProductModal = ({ product, category, isOpen, onClose, onAddToCart }) => {
               </div>
             </div>
 
-            {/* Description - Collapsed */}
+            {/* Description - Scrollable for elderly-friendly reading */}
             {product.description && (
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-2 font-bold">
-                {product.description}
-              </p>
+              <div className="mb-4 bg-gradient-to-b from-amber-50/80 to-amber-50/40 rounded-xl border border-amber-200/50 overflow-hidden">
+                <div className="max-h-24 overflow-y-auto overscroll-contain p-3 scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent">
+                  <p className="text-foreground text-base leading-relaxed font-medium" style={{ fontSize: '16px', lineHeight: '1.6' }}>
+                    {product.description}
+                  </p>
+                </div>
+                {/* Scroll indicator for long descriptions */}
+                <div className="text-center py-1 bg-amber-100/50 border-t border-amber-200/30">
+                  <span className="text-xs text-amber-600 font-bold">↕ прокрутите для чтения</span>
+                </div>
+              </div>
             )}
 
             {/* Weight Selection */}
